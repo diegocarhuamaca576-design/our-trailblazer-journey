@@ -44,12 +44,6 @@
             z-index: 10;
         }
 
-        .top-controles-der {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
         .menu-btn, .close-btn {
             font-family: 'Cinzel', serif;
             font-size: 1.1rem;
@@ -59,11 +53,6 @@
             padding: 6px 12px;
             border-radius: 4px;
             border: 1px solid rgba(212, 175, 55, 0.4);
-            transition: background 0.2s;
-        }
-
-        .menu-btn:hover, .close-btn:hover {
-            background: rgba(212, 175, 55, 0.25);
         }
 
         .escenario-expreso {
@@ -283,28 +272,24 @@
 </head>
 <body>
 
-    <!-- Audio de inicio de Honkai: Star Rail -->
-    <audio id="musica-hsr" src="musica_inicio_hsr.mp3" loop preload="auto"></audio>
-
     <!-- Pantalla 1: Selección de Tomos -->
     <div id="pantalla-inicio" class="pantalla activa">
         <header class="hxr-top-bar">
             <div class="menu-btn" onclick="window.location.reload()">≡ Menu</div>
-            <div class="top-controles-der">
-                <div class="menu-btn btn-audio" onclick="toggleAudio()">♪ Música: ON</div>
-                <div class="close-btn">×</div>
-            </div>
+            <div class="close-btn">×</div>
         </header>
 
         <div class="escenario-expreso">
             <h1 class="titulo-principal">Nuestro Viaje Trazacaminos</h1>
 
+            <!-- Versión escritorio: zonas clicables sobre la imagen de fondo -->
             <div class="zona-clics-libros">
                 <div class="hotspot-libro" onclick="abrirTomo(1)" title="Tomo I"></div>
                 <div class="hotspot-libro" onclick="abrirTomo(2)" title="Tomo II"></div>
                 <div class="hotspot-libro" onclick="abrirTomo(3)" title="Tomo III"></div>
             </div>
 
+            <!-- Versión celular: tomos apilados de arriba a abajo -->
             <div class="lista-movil">
                 <div class="tomo-movil m1" onclick="abrirTomo(1)" title="Tomo I"></div>
                 <div class="tomo-movil m2" onclick="abrirTomo(2)" title="Tomo II"></div>
@@ -317,10 +302,7 @@
     <div id="pantalla-lectura" class="pantalla">
         <header class="hxr-top-bar">
             <div class="menu-btn" onclick="volverBiblioteca()">← Volver</div>
-            <div class="top-controles-der">
-                <div class="menu-btn btn-audio" onclick="toggleAudio()">♪ Música: ON</div>
-                <div class="close-btn" onclick="volverBiblioteca()">×</div>
-            </div>
+            <div class="close-btn" onclick="volverBiblioteca()">×</div>
         </header>
 
         <div class="escenario-expreso">
@@ -344,62 +326,23 @@
 
     <script>
         const textosTomos = {
-            1: `Tomo I (Suki): En esta fecha especial te recuerdo un poquito de nuestro pequeño viaje juntos este año, por supuesto por el inicio. Recuerdo bien que no empezamos a hablar, al inicio de cualquier sonsera del team o de los juegos, cada día haciéndonos más cercanos, conociéndonos un poquito más, sin esperar nada ni buscarlo, solo acompañando al otro en un momento que podía ser bueno o malo. Estuvimos cerca, dejamos de hablar un tiempo (culpa mía jsjs), aún así te quedaste esperándome... creo que eso me dio la primera pista.`,
-            2: `Tomo II (Daisuki): Poco a poco, lo que era una amistad naciente se convirtió en algo más profundo, más difícil de entender y nombrar. A pesar de la distancia, a pesar del alejamiento repentino, cuando volvimos a hablar todo fluyó igual o mejor que antes, como un engranaje que se acopla perfectamente a su maquinaria ideal. Y así pasó repentinamente, sin darnos cuenta sucedió, aquella noche en que nos unimos por decisión, voluntad y amor.`,
-            3: `Tomo III (Aishiteru): El tiempo ha pasado rápido hasta hoy en día, donde nuestro vínculo es sólido y lleno de un amor inmenso. Miramos hacia adelante compartiendo sueños, metas, con tantas cosas pendientes tanto cada uno por su lado como juntos. Por eso, hoy, mi querida Samantha, quiero agradecerte, gracias por permanecer a mi lado a lo largo de todo este tiempo, por quedarte incluso cuando llegaban momentos en los que era algo difícil o ambos estábamos demasiado ocupados. Hoy y siempre te voy a amar mi vida, hasta el fin de nuestro viaje por el vasto universo...`
+            1: "Tomo I (Suki): En esta fecha especial te recuerdo un poquito de nuestro pequeño viaje juntos este año, por supuesto por el inicio. Recuerdo bien que no empezamos a hablar, al inicio de cualquier sonsera del team o de los juegos, cada día haciéndonos más cercanos, conociéndonos un poquito más, sin esperar nada ni buscarlo, solo acompañando al otro en un momento que podía ser bueno o malo. Estuvimos cerca, dejamos de hablar un tiempo (culpa mía jsjs), aún así te quedaste esperándome... creo que eso me dio la primera pista.",
+            
+            2: "Tomo II (Daisuki): Poco a poco, lo que era una amistad naciente se convirtió en algo más profundo, más difícil de entender y nombrar. A pesar de la distancia, a pesar del alejamiento repentino, cuando volvimos a hablar todo fluyó igual o mejor que antes, como un engranaje que se acopla perfectamente a su maquinaria ideal. Y así pasó repentinamente, sin darnos cuenta sucedió, aquella noche en que nos unimos por decisión, voluntad y amor.",
+            
+            3: "Tomo III (Aishiteru): El tiempo ha pasado rápido hasta hoy en día, donde nuestro vínculo es sólido y lleno de un amor inmenso. Miramos hacia adelante compartiendo sueños, metas, con tantas cosas pendientes tanto cada uno por su lado como juntos. Por eso, hoy, mi querida Samantha, quiero agradecerte, gracias por permanecer a mi lado a lo largo de todo este tiempo, por quedarte incluso cuando llegaban momentos en los que era algo difícil o ambos estábamos demasiado ocupados. Hoy y siempre te voy a amar mi vida, hasta el fin de nuestro viaje por el vasto universo..."
         };
 
         const frasesTomos = {
-            1: `“El viaje de un Trazacaminos se escribe paso a paso...”`,
-            2: `“....conociendo a personas desconocidas que, sin saberlo, un día pueden volverse muy importantes.....”`,
-            3: `“.... tanto que llegará el día en que ansies que permanezcan en el expreso, viajando a tu lado.”`
+            1: "\"El viaje de un Trazacaminos se escribe paso a paso...\"",
+            2: "\"....conociendo a personas desconocidas que, sin saberlo, un día pueden volverse muy importantes.....\"",
+            3: "\".... tanto que llegará el día en que ansies que permanezcan en el expreso, viajando a tu lado.\""
         };
 
         let tomoActual = 1;
         let intervaloEscritura = null;
 
-        // Control de música de fondo
-        const audioHSR = document.getElementById('musica-hsr');
-        let audioIniciado = false;
-        let silenciadoManualmente = false;
-
-        function actualizarEtiquetasAudio(encendida) {
-            document.querySelectorAll('.btn-audio').forEach((btn) => {
-                btn.textContent = encendida ? '♪ Música: ON' : '♪ Música: OFF';
-            });
-        }
-
-        function reproducirAlInteractuar() {
-            if (!audioIniciado && !silenciadoManualmente && audioHSR) {
-                audioHSR.volume = 0.35;
-                audioHSR.play().then(() => {
-                    audioIniciado = true;
-                    actualizarEtiquetasAudio(true);
-                }).catch(() => {});
-            }
-        }
-
-        function toggleAudio() {
-            if (!audioHSR) return;
-            audioHSR.volume = 0.35;
-            if (audioHSR.paused) {
-                silenciadoManualmente = false;
-                audioHSR.play().then(() => {
-                    audioIniciado = true;
-                    actualizarEtiquetasAudio(true);
-                }).catch(() => {});
-            } else {
-                silenciadoManualmente = true;
-                audioHSR.pause();
-                actualizarEtiquetasAudio(false);
-            }
-        }
-
-        document.addEventListener('click', reproducirAlInteractuar, { once: true });
-        document.addEventListener('touchstart', reproducirAlInteractuar, { once: true });
-
         function abrirTomo(numero) {
-            reproducirAlInteractuar();
             tomoActual = numero;
             document.getElementById('frase-tomo').textContent = frasesTomos[numero];
             document.getElementById('pantalla-inicio').classList.remove('activa');
@@ -419,7 +362,6 @@
         }
 
         function iniciarEscritura() {
-            reproducirAlInteractuar();
             const boton = document.getElementById('btn-comenzar-viaje');
             boton.style.display = 'none'; 
             
@@ -441,10 +383,6 @@
                 }
             }, 25); 
         }
-        window.abrirTomo = abrirTomo;
-        window.volverBiblioteca = volverBiblioteca;
-        window.iniciarEscritura = iniciarEscritura;
-        window.toggleAudio = toggleAudio;
     </script>
 </body>
 </html>
